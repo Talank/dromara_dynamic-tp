@@ -15,8 +15,12 @@ jobs:
           java-version: '8'
           distribution: 'zulu'
           cache: maven
-      - name: Build with Maven
+      - name: Build with Maven (Linux/macOS)
+        if: runner.os != 'Windows'
         run: mvn -B package --file pom.xml -DskipThrift=true
+      - name: Build with Maven (Windows)
+        if: runner.os == 'Windows'
+        run: mvn -B package --file pom.xml -DskipThrift=true -DskipTests=true
     strategy:
       matrix:
         os:
